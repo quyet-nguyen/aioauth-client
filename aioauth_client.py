@@ -152,7 +152,8 @@ class Client(object, metaclass=ClientRegistry):
         response = yield from self.request('GET', self.user_info_url, loop=loop, **kwargs)
         if response.status / 100 > 2:
             raise web.HTTPBadRequest(reason='Failed to obtain User information. '
-                                     'HTTP status code: %s' % response.status)
+                                     'Request URL: %s. ' 
+                                     'Response status: %s' % (response.url, response.status) )
         data = (yield from response.json())
         user = User(**dict(self.user_parse(data)))
         return user, data
